@@ -17,7 +17,7 @@ mkt3$Cbsa <- rep("Sacramento", nrow(mkt3))
 mkt.combo <- rbind(mkt1, mkt2, mkt3)
 head(mkt.combo)
 
-mkt.combo$spending <- ifelse(mkt.combo$`Profile List Title`=="Scarborough Base Households","Scarborough Base Households",
+mkt.combo$Spending <- ifelse(mkt.combo$`Profile List Title`=="Scarborough Base Households","Scarborough Base Households",
                              ifelse(mkt.combo$`Profile List Title`=="Amount household spent on groceries past 7 days (HHLD) $150 - $199" | mkt.combo$`Profile List Title`=="Amount household spent on groceries past 7 days (HHLD) $200 or more", "$150+",
                               ifelse(mkt.combo$`Profile List Title`=="Amount household spent on groceries past 7 days (HHLD) $125 - $149" | mkt.combo$`Profile List Title`=="Amount household spent on groceries past 7 days (HHLD) $100 - $124" | mkt.combo$`Profile List Title`=="Amount household spent on groceries past 7 days (HHLD) $75 - $99" | mkt.combo$`Profile List Title`=="Amount household spent on groceries past 7 days (HHLD) $50 - $74", "$50 - $149", 
                                 ifelse(mkt.combo$`Profile List Title`=="Amount household spent on groceries past 7 days (HHLD) Less than $50", "Less than $50", "BLANK"))))
