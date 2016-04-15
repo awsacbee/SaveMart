@@ -1,6 +1,11 @@
 library(Rserve)
 Rserve()
 
+na.zero <- function (x) {
+  x[is.na(x)] <- 0
+  return(x)
+}
+
 library(readxl)
 mkt1 <- read_excel("M:/Anna Welden/Tableau/SaveMart/HHLD Grocery spending_Fresno CBSA.xlsx", sheet = 2)
 mkt2 <- read_excel("M:/Anna Welden/Tableau/SaveMart/HHLD Grocery spending_Modesto CBSA.xlsx", sheet = 2)
@@ -26,15 +31,35 @@ mkt.combo$Spending <- ifelse(mkt.combo$`Profile List Title`=="Scarborough Base H
 table(mkt.combo$spending)    
 
 # Split measure column into seperate columns - one for each measure
-mkt.combo$Count[mkt.combo$Measure=="Count"] <- mkt.combo$Value[mkt.combo$Measure=="Count"]
-mkt.combo[mkt.combo$Measure=="% Total", "% Total"] <- mkt.combo$Value[mkt.combo$Measure=="% Total"]
-mkt.combo[mkt.combo$Measure=="Users/100 HHs", "Users/100 HHs"] <- mkt.combo$Value[mkt.combo$Measure=="Users/100 HHs"]
-mkt.combo$Index[mkt.combo$Measure=="Index"] <- mkt.combo$Value[mkt.combo$Measure=="Index"]
+mkt.combo$Count[mkt.combo$Measure=="Count"] <- as.numeric(mkt.combo$Value[mkt.combo$Measure=="Count"])
+mkt.combo[mkt.combo$Measure=="% Total", "% Total"] <- as.numeric(mkt.combo$Value[mkt.combo$Measure=="% Total"])
+mkt.combo[mkt.combo$Measure=="Users/100 HHs", "Users/100 HHs"] <- as.numeric(mkt.combo$Value[mkt.combo$Measure=="Users/100 HHs"])
+mkt.combo$Index[mkt.combo$Measure=="Index"] <- as.numeric(mkt.combo$Value[mkt.combo$Measure=="Index"])
 
-names(mkt.combo )
+# Base measures
+names(mkt.combo)
+table(mkt.combo$Measure)
+mkt.combo[mkt.combo$Measure=="Total Profile Count", "Total Profile Count"]                  <- as.numeric(mkt.combo$Value[mkt.combo$Measure=="Total Profile Count"])
+mkt.combo[mkt.combo$Measure=="Total Profile Users/100 HHs", "Total Profile Users/100 HHs"]  <- as.numeric(mkt.combo$Value[mkt.combo$Measure=="Total Profile Users/100 HHs"])
+
+mkt.combo$Count <- na.zero(mkt.combo$Count)
+mkt.combo["% Total"] <- na.zero(mkt.combo["% Total"])
+mkt.combo["Users/100 HHs"] <- na.zero(mkt.combo["Users/100 HHs"])
+mkt.combo$Index <- na.zero(mkt.combo$Index)
+mkt.combo["Total Profile Count"] <- na.zero(mkt.combo["Total Profile Count"])
+mkt.combo["Total Profile Users/100 HHs"] <- na.zero(mkt.combo["Total Profile Users/100 HHs"])
+
+
+summary(mkt.combo$Count[mkt.combo$Count>0])
+summary(mkt.combo["% Total"][mkt.combo["% Total"]>0])
+summary(mkt.combo["Users/100 HHs"][mkt.combo["Users/100 HHs"]>0])
+summary(mkt.combo$Index[mkt.combo$Index>0])
+summary(mkt.combo["Total Profile Count"][mkt.combo["Total Profile Count"]>0])
+summary(mkt.combo["Total Profile Users/100 HHs"][mkt.combo["Total Profile Users/100 HHs"]>0])
 
 #fix merged cell problem
-mkt.combo$`Profile List 2`[mkt.combo$`Profile List 1` %in% "Profile List"] <- "Profile List"
+mkt.combo$`Profile List 2`[mkt.combo$`Profile List 1` %in% "Profile List"] <- "Total Profile"
+mkt.combo$`Profile List 1`[mkt.combo$`Profile List 1` %in% "Profile List"] <- "Total Profile"
 
 write.csv(mkt.combo, "M:/Anna Welden/Tableau/SaveMart/HHLD Grocery spending_Stacked CBSA.csv", row.names = T)
 
