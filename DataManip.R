@@ -7,9 +7,9 @@ na.zero <- function (x) {
 }
 
 library(readxl)
-mkt1 <- read_excel("M:/Anna Welden/Tableau/SaveMart/HHLD Grocery spending_Fresno CBSA.xlsx", sheet = 2)
-mkt2 <- read_excel("M:/Anna Welden/Tableau/SaveMart/HHLD Grocery spending_Modesto CBSA.xlsx", sheet = 2)
-mkt3 <- read_excel("M:/Anna Welden/Tableau/SaveMart/HHLD Grocery spending_Sac CBSA.xlsx", sheet = 2)
+mkt1 <- read_excel("C:/Users/awelden/Google Drive/MAD Science/Tableau/SaveMart/HHLD Grocery spending_Fresno CBSA.xlsx", sheet = 2)
+mkt2 <- read_excel("C:/Users/awelden/Google Drive/MAD Science/Tableau/SaveMart/HHLD Grocery spending_Modesto CBSA.xlsx", sheet = 2)
+mkt3 <- read_excel("C:/Users/awelden/Google Drive/MAD Science/Tableau/SaveMart/HHLD Grocery spending_Sac CBSA.xlsx", sheet = 2)
 
 names(mkt1) <- c("Profile List Order", "Profile List Title", "Profile List 1", "Profile List 2", "Measure", "Value")
 names(mkt2) <- c("Profile List Order", "Profile List Title", "Profile List 1", "Profile List 2", "Measure", "Value")
